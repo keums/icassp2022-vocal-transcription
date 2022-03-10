@@ -1,3 +1,4 @@
 output/
 audio/
+!audio/test.wav
 data/

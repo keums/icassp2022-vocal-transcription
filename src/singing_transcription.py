@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # %%
+import argparse
 import numpy as np
 from pathlib import Path
 from model import *
@@ -11,13 +12,15 @@ from MIDI import *
 # %%
 class SingingTranscription:
     def __init__(self):
-        self.PATH_PROJECT = pathlib.Path(__file__).parent.parent
+
+        self.PATH_PROJECT = pathlib.Path(__file__).absolute().parent.parent
         self.num_spec = 513
         self.window_size = 31
         self.note_res = 1
         self.batch_size = 64
 
     def load_model(self, path_weight, TF_summary=False):
+
         model = melody_ResNet_JDC(self.num_spec, self.window_size, self.note_res)
         model.load_weights(path_weight)
         if TF_summary == True:
@@ -58,16 +61,14 @@ class SingingTranscription:
         f.close()
 
 
-# %%
-if __name__ == "__main__":
-
+def main(args):
     ST = SingingTranscription()
 
     """ load model """
     model_ST = ST.load_model(f"{ST.PATH_PROJECT}/data/weight_ST.hdf5", TF_summary=False)
 
     """ predict note (time-freq) """
-    filepath = f"{ST.PATH_PROJECT}/audio/MusicDelta_Country.wav"
+    filepath = args.path_audio
     note_midi = ST.predict_melody(model_ST, filepath)
 
     """ refine note """
@@ -76,12 +77,34 @@ if __name__ == "__main__":
 
     """ save results """
     filename = get_filename_wo_extension(filepath)
-    path_note = f"{ST.PATH_PROJECT}/output/{filename}.txt"
+    path_note = f"{args.path_save}/{filename}.txt"
     ST.save_output_time_pitch_axis(refined_note, path_note)
 
     """ change note from (time-freq) to (midi) """
-    PATH_est_midi = f"{ST.PATH_PROJECT}/output/{filename}.mid"
+    PATH_est_midi = f"{args.path_save}/{filename}.mid"
+
     note2Midi(path_input_note=path_note, path_output=PATH_est_midi, tempo=tempo)
 
-    print(f"DONE! Transcription: {filename}")
+    print(f"DONE! Transcription: {filepath}")
 
+
+# %%
+if __name__ == "__main__":
+    PATH_PROJECT = pathlib.Path(__file__).absolute().parent.parent
+    parser = argparse.ArgumentParser(description="Predict singing transcription")
+    parser.add_argument(
+        "-i",
+        "--path_audio",
+        type=str,
+        help="Path to input audio file.",
+        default=f"{PATH_PROJECT}/audio/test.wav",
+    )
+    parser.add_argument(
+        "-o",
+        "--path_save",
+        type=str,
+        help="Path to folder for saving note&mid files",
+        default=f"{PATH_PROJECT}/output",
+    )
+
+    main(parser.parse_args())
