@@ -1,4 +1,4 @@
 output/
-audio/
+audio/*
 !audio/test.wav
 data/
