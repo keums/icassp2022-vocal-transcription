@@ -12,8 +12,8 @@ Lack of large-scale note-level labeled data is the major obstacle to singing tra
 To validate the method, we conduct various experiment settings by investigating two vocal pitch estimation models as pseudo-label generators, two setups of teacher-student frameworks, and the number of iterations in self-training. The results show that the proposed method can effectively leverage large-scale unlabeled audio data and self-training with the noisy student model helps to improve performance. Finally, we show that the model trained with only unlabeled data has comparable performance to previous works and the model trained with addi- tional labeled data achieves higher accuracy than the model trained with only labeled data.
 
 ## Demo video
-[Youtube Link 1: You&I (IU)](https://www.youtube.com/watch?v=wlD-GAGuj0M "Demo 1: Singing transcription from polpyphonic music")
-[Youtube Link 2: You in my arms (Myung jin Moon)](https://youtu.be/iitOC4vuC8U "Demo 2: Singing transcription from polpyphonic music")
+- [Youtube Link 1: You&I (IU)](https://www.youtube.com/watch?v=wlD-GAGuj0M "Demo 1: Singing transcription from polpyphonic music")
+- [Youtube Link 2: You in my arms (Myung jin Moon)](https://youtu.be/iitOC4vuC8U "Demo 2: Singing transcription from polpyphonic music")
 
 
 ## Dependencies

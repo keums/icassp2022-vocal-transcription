@@ -97,7 +97,7 @@ if __name__ == "__main__":
         "--path_audio",
         type=str,
         help="Path to input audio file.",
-        default=f"{PATH_PROJECT}/audio/test.wav",
+        default=f"{PATH_PROJECT}/audio/pop1.wav",
     )
     parser.add_argument(
         "-o",
