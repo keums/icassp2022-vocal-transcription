@@ -46,7 +46,7 @@ $ python singing_transcription.py -i ../audio/test.wav  -o ../output
 If you find our work useful, please consider citing our paper.
 
 ``` 
-@inproceedings{kum2020semi,
+@inproceedings{kum2022pseudo,
   title={Pseudo-Label Transfer from Frame-Level to Note-Level in a Teacher-Student Framework for Singing Transcription from Polyphonic Music},
   author={Sangeun Kum, Jongpil Lee, Keunhyoung Luke Kim, Taehyoung Kim, and Juhan Nam},
   booktitle={Proceedings of the IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
