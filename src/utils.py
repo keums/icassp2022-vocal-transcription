@@ -43,3 +43,7 @@ def pitch2note(pitch):
     pitch[pitch > 0] = np.round((69.0 + 12.0 * np.log2(pitch[pitch > 0] / 440.0)))
     return pitch
 
+
+a = np.array([0, 0, 0, 1, 2, 3, 5, 0, 0, 0, 1, 2, 4, 5])
+b = a[a > 0] * 2
+print(b)

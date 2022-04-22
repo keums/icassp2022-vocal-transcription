@@ -126,9 +126,16 @@ def note_to_segment(note):
     return list(zip(startSeg, endSeg, notes))
 
 
-def note2Midi(path_input_note, path_output, tempo):
-    note = np.loadtxt(path_input_note)
-    note = note[:, 1]
-    segment = note_to_segment(note)
+def note2Midi(frame_level_pitchscroe, path_output, tempo):
+    # note = np.loadtxt(path_input_note)
+    # note = note[:, 1]
+    segment = note_to_segment(frame_level_pitchscroe)
     segment_to_midi(segment, path_output=path_output, tempo=tempo)
+
+
+# def note2Midi(path_input_note, path_output, tempo):
+#     note = np.loadtxt(path_input_note)
+#     note = note[:, 1]
+#     segment = note_to_segment(note)
+#     segment_to_midi(segment, path_output=path_output, tempo=tempo)
 

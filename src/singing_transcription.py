@@ -36,7 +36,7 @@ class SingingTranscription:
 
         """  melody predict"""
         y_predict = model_ST.predict(X_test, batch_size=self.batch_size, verbose=1)
-        y_predict = y_predict[0]  # [0]:pitch,  [1]:vocal
+        y_predict = y_predict[0]  # [0]:note,  [1]:vocing
         y_shape = y_predict.shape
         num_total = y_shape[0] * y_shape[1]
         y_predict = np.reshape(y_predict, (num_total, y_shape[2]))
@@ -51,13 +51,22 @@ class SingingTranscription:
                 # est_freq[i] = 2 ** ((pitch_MIDI - 69) / 12.0) * 440
         return est_MIDI
 
-    def save_output_time_pitch_axis(self, pitch, path_save):
-        check_and_make_dir(Path(path_save).parent)
+    def save_output_frame_level(self, pitch_score, path_save, note_or_freq="note"):
+        check_and_make_dir(Path(path_save))
         f = open(path_save, "w")
-        for j in range(len(pitch)):
-            est = "%.2f %.4f\n" % (0.01 * j, pitch[j])
-            # est = "%.2f %.4f\n" % (0.01 * j, 2 ** ((pitch[j] - 69) / 12.0) * 440)
-            f.write(est)
+
+        assert (note_or_freq == "freq") or (note_or_freq == "note"), "please check 'note' or 'freq"
+        if note_or_freq == "freq":
+            for j in range(len(pitch_score)):
+                if pitch_score[j] > 0:
+                    pitch_score[j] = 2 ** ((pitch_score[j] - 69) / 12.0) * 440
+                est = "%.2f %.4f\n" % (0.01 * j, pitch_score[j])
+                f.write(est)
+        elif note_or_freq == "note":
+            for j in range(len(pitch_score)):
+                est = "%.2f %.4f\n" % (0.01 * j, pitch_score[j])
+                f.write(est)
+
         f.close()
 
 
@@ -68,24 +77,28 @@ def main(args):
     model_ST = ST.load_model(f"{ST.PATH_PROJECT}/data/weight_ST.hdf5", TF_summary=False)
 
     """ predict note (time-freq) """
-    filepath = args.path_audio
-    note_midi = ST.predict_melody(model_ST, filepath)
+    path_audio = args.path_audio
+    fl_note = ST.predict_melody(model_ST, path_audio)  # frame-level pitch score
 
-    """ refine note """
-    tempo = calc_tempo(filepath)
-    refined_note = refine_note(note_midi, tempo)
+    """ post-processing """
+    tempo = calc_tempo(path_audio)
+    refined_fl_note = refine_note(fl_note, tempo)  # frame-level pitch score
 
-    """ save results """
-    filename = get_filename_wo_extension(filepath)
-    path_note = f"{args.path_save}/{filename}.txt"
-    ST.save_output_time_pitch_axis(refined_note, path_note)
+    """ convert frame-level pitch score to note-level (time-axis) """
+    segment = note_to_segment(refined_fl_note)  # note-level pitch score
 
-    """ change note from (time-freq) to (midi) """
-    PATH_est_midi = f"{args.path_save}/{filename}.mid"
+    """ save ouput to .mid """
+    filename = get_filename_wo_extension(path_audio)
+    path_output = f"{args.path_save}/{filename}.mid"
+    segment_to_midi(segment, path_output=path_output, tempo=tempo)
 
-    note2Midi(path_input_note=path_note, path_output=PATH_est_midi, tempo=tempo)
+    if args.output_type == "fps":
+        path_note = f"{args.path_save}/{filename}.txt"
+        ST.save_output_frame_level(refined_fl_note, path_note, note_or_freq="freq")
 
-    print(f"DONE! Transcription: {filepath}")
+    print(f"\n========= DONE =========")
+    print(f"input: '{path_audio}'")
+    print(f"output: '{path_output}'")
 
 
 # %%
@@ -103,8 +116,16 @@ if __name__ == "__main__":
         "-o",
         "--path_save",
         type=str,
-        help="Path to folder for saving note&mid files",
+        help="Path to folder for saving .mid file",
         default=f"{PATH_PROJECT}/output",
+    )
+
+    parser.add_argument(
+        "-ot",
+        "--output_type",
+        type=str,
+        help="(optional) Output type: midi or frame-level pitch score(fps)",
+        default=f"midi",
     )
 
     main(parser.parse_args())
