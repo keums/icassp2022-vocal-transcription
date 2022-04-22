@@ -42,6 +42,9 @@ $ python singing_transcription.py -i ../audio/test.wav  -o ../output
   -ot output_type        (optional) Output type: midi or frame-level pitch score(fps) (default: 'midi')
 ```
 
+# Citation
+If you find our work useful, please consider citing our paper.
+
 ``` 
 @inproceedings{kum2020semi,
   title={Pseudo-Label Transfer from Frame-Level to Note-Level in a Teacher-Student Framework for Singing Transcription from Polyphonic Music},
