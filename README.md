@@ -29,4 +29,26 @@ To validate the method, we conduct various experiment settings by investigating 
   - Numpy, SciPy
 
 - Hardware
-  - 1 GPU : GeForce GTX 3080ti
+  - 1 GPU : GeForce GTX 3090
+
+
+## Using melody_extraction_SSL from the command line
+
+``` 
+$ python singing_transcription.py -i ../audio/test.wav  -o ../output
+
+[optional arguments]
+  -i path_audio           Path to input audio file. (default: ../audio/pop1.wav)
+  -o pathsave             Path to folder for saving .mid file (default: ../output)
+                          It will run with cpu if None. (default: None)
+  -ot output_type        (optional) Output type: midi or frame-level pitch score(fps) (default: ./results/)
+```
+
+``` 
+@inproceedings{kum2020semi,
+  title={Pseudo-Label Transfer from Frame-Level to Note-Level in a Teacher-Student Framework for Singing Transcription from Polyphonic Music},
+  author={Sangeun Kum, Jongpil Lee, Keunhyoung Luke Kim, Taehyoung Kim, and Juhan Nam},
+  booktitle={Proceedings of the IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  year={2022}
+}
+``` 
