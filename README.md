@@ -42,7 +42,7 @@ $ python singing_transcription.py -i ../audio/test.wav  -o ../output
   -ot output_type        (optional) Output type: midi or frame-level pitch score(fps) (default: 'midi')
 ```
 - output example: ADC04-pop1.wav
-  <img src="./img/example_pop1_midi.png" width="90%">
+  <img src="./img/example_pop1_midi.png" width="100%">
 # Citation
 If you find our work useful, please consider citing our paper.
 
