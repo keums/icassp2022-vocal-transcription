@@ -32,16 +32,14 @@ To validate the method, we conduct various experiment settings by investigating 
   - 1 GPU : GeForce GTX 3090
 
 
-## Using melody_extraction_SSL from the command line
-
+## Using STP from the command line
 ``` 
 $ python singing_transcription.py -i ../audio/test.wav  -o ../output
 
 [optional arguments]
-  -i path_audio           Path to input audio file. (default: ../audio/pop1.wav)
-  -o pathsave             Path to folder for saving .mid file (default: ../output)
-                          It will run with cpu if None. (default: None)
-  -ot output_type        (optional) Output type: midi or frame-level pitch score(fps) (default: ./results/)
+  -i path_audio           Path to input audio file. (default: '../audio/pop1.wav')
+  -o pathsave             Path to folder for saving .mid file (default: '../output')
+  -ot output_type        (optional) Output type: midi or frame-level pitch score(fps) (default: 'midi')
 ```
 
 ``` 

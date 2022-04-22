@@ -125,7 +125,7 @@ if __name__ == "__main__":
         "--output_type",
         type=str,
         help="(optional) Output type: midi or frame-level pitch score(fps)",
-        default=f"midi",
+        default="midi",
     )
 
     main(parser.parse_args())
